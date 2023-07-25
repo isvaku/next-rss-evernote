@@ -1,6 +1,6 @@
 import { authMiddleware, authConfig } from "@erss/auth/server";
 
 export default authMiddleware({
-  publicRoutes: ["/"],
+  publicRoutes: ["/", "/api/webhooks/(.*)"],
 });
-export const config = { ...authConfig };
+export const config = { matcher: authConfig.matcher };
