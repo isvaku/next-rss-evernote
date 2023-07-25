@@ -8,7 +8,7 @@ export default function Example() {
         TEST
         <UserButton afterSignOutUrl="/" />
       </header>
-      <div>Your page's content can go here.</div>
+      <div>Content can go here.</div>
     </>
   );
 }
