@@ -11,7 +11,7 @@
 		"dev": "pnpm with-env prisma studio --port 5556",
 		"with-env": "dotenv -e ../../.env --",
 		"lint": "eslint *.ts*",
-		"postinstall": "db:generate"
+		"postinstall": "pnpm db:generate"
 	},
 	"dependencies": {
 		"@prisma/client": "^5.0.0",
