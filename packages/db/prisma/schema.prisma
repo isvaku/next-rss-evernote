@@ -3,16 +3,90 @@
 
 generator client {
     provider = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mongodb"
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+enum oauthStatus {
+    EMPTY
+    CREATED
+    ERROR
+    SUCCESS
 }
+
+type Error {
+    message String
+}
+
+type Integrations {
+    evernote Evernote?
+}
+
+type Evernote {
+    oauthToken              String?
+    expires                 Int?        @db.Long
+    sessionOauthToken       String?
+    sessionOauthTokenSecret String?
+    oauthStatus             oauthStatus @default(EMPTY)
+    oauthError              Error[]
+}
+
+model Users {
+    id           String        @id @default(auto()) @map("_id") @db.ObjectId
+    name         String?
+    username     String        @unique
+    email        String        @unique
+    password     String
+    integrations Integrations?
+    createdAt    DateTime      @default(now()) @db.Date
+    updatedAt    DateTime      @updatedAt @db.Date
+    rss          Rss[]
+}
+
+type Notebook {
+    name String
+    guid String
+}
+
+type Tag {
+    name String
+    guid String
+}
+
+model Rss {
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime  @default(now()) @db.Date
+    updatedAt DateTime  @updatedAt @db.Date
+    url       String
+    notebook  Notebook
+    tags      Tag[]
+    active    Boolean   @default(false)
+    user      Users     @relation(fields: [userId], references: [id])
+    userId    String    @db.ObjectId
+    entries   Entries[]
+}
+
+model Entries {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt   DateTime @default(now()) @db.Date
+    updatedAt   DateTime @updatedAt @db.Date
+    entryId     String
+    title       String
+    author      String
+    content     String
+    link        String
+    created     Boolean
+    entryDate   DateTime
+    entryErrors Error[]
+    feed        Rss      @relation(fields: [rssId], references: [id])
+    rssId       String   @db.ObjectId
+}
+
+//model TEMPLATE {
+//    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//    createdAt DateTime @default(now())
+//    updatedAt DateTime @updatedAt
+//}

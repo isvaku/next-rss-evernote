@@ -13,4 +13,3 @@ export const prisma =
   });
 
 if (env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-console.log("🚀 ~ file: index.ts:16 ~ env:", env);

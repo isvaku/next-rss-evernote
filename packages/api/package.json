@@ -5,6 +5,7 @@
 	"types": "./src/index.ts",
 	"license": "MIT",
 	"scripts": {
+		"clean": "rm -rf node_modules",
 		"lint": "eslint *.ts*"
 	},
 	"dependencies": {

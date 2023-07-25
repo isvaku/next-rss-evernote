@@ -6,8 +6,7 @@
 			],
 			"outputs": [
 				"dist/**",
-				".next/**",
-				".expo/**"
+				".next/**"
 			]
 		},
 		"lint": {

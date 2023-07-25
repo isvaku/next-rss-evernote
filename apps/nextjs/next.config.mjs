@@ -18,6 +18,6 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  transpilePackages: ["@erss/api"],
+  transpilePackages: ["@erss/api", "@erss/db", "@erss/auth"],
 };
 export default config;
