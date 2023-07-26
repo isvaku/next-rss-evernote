@@ -35,11 +35,10 @@ type Evernote {
 }
 
 model Users {
-    id           String        @id @default(auto()) @map("_id") @db.ObjectId
+    id           String        @id @map("_id")
     name         String?
-    username     String        @unique
-    email        String        @unique
-    password     String
+    username     String?       @unique
+    email        String?       @unique
     integrations Integrations?
     createdAt    DateTime      @default(now()) @db.Date
     updatedAt    DateTime      @updatedAt @db.Date
@@ -65,7 +64,7 @@ model Rss {
     tags      Tag[]
     active    Boolean   @default(false)
     user      Users     @relation(fields: [userId], references: [id])
-    userId    String    @db.ObjectId
+    userId    String
     entries   Entries[]
 }
 

@@ -8,8 +8,8 @@
 		"clean": "rm -rf node_modules",
 		"db:generate": "pnpm with-env prisma generate",
 		"db:push": "pnpm with-env prisma db push --skip-generate",
-		"dev": "pnpm with-env prisma studio --port 5556",
-		"with-env": "dotenv -e ../../.env --",
+		"dev": "npx kill-port 5556 && pnpm with-env prisma studio --port 5556",
+		"with-env": "dotenv -e ../../apps/nextjs/.env --",
 		"lint": "eslint *.ts*",
 		"postinstall": "pnpm db:generate"
 	},

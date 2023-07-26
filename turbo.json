@@ -1,8 +1,15 @@
 {
 	"pipeline": {
+		"db:generate": {
+			"cache": false
+		},
+		"db:push": {
+			"cache": false
+		},
 		"build": {
 			"dependsOn": [
-				"^build"
+				"^build",
+				"^db:generate"
 			],
 			"outputs": [
 				"dist/**",
@@ -13,6 +20,9 @@
 			"outputs": []
 		},
 		"dev": {
+			"dependsOn": [
+				"db:generate"
+			],
 			"cache": false
 		}
 	}
