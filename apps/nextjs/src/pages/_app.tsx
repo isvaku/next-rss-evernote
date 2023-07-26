@@ -1,4 +1,4 @@
-import { api } from "@erss/api";
+import { api } from "~/utils/api";
 import "~/styles/globals.css";
 
 import type { AppProps, AppType } from "next/app";
