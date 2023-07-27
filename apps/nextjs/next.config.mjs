@@ -4,6 +4,8 @@
  */
 await import("./src/env.mjs");
 
+import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin'
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -19,5 +21,12 @@ const config = {
     defaultLocale: "en",
   },
   transpilePackages: ["@erss/api", "@erss/db", "@erss/auth"],
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()]
+    }
+
+    return config
+  },
 };
 export default config;
