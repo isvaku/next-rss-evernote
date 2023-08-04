@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, type Prisma as PrismaTypes } from "@prisma/client";
 import { env } from "./env.mjs";
 
 const globalForPrisma = globalThis as unknown as {
@@ -13,3 +13,5 @@ export const prisma =
   });
 
 if (env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+export { PrismaTypes };

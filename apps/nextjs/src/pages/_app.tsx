@@ -5,15 +5,15 @@ import type { AppProps, AppType } from "next/app";
 import Head from "next/head";
 import { AuthProvider } from "@erss/auth/client";
 
-const MyApp: AppType = ({ Component, pageProps }: AppProps) => {
+const App: AppType = ({ Component, pageProps }: AppProps) => {
   return (
     <AuthProvider {...pageProps}>
       <Head>
-        <title>Only Emojis</title>
+        <title>Next RSS-Note generator</title>
       </Head>
       <Component {...pageProps} />
     </AuthProvider>
   );
 };
 
-export default api.withTRPC(MyApp);
+export default api.withTRPC(App);

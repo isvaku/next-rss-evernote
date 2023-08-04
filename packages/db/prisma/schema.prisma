@@ -11,81 +11,71 @@ datasource db {
 }
 
 enum oauthStatus {
-    EMPTY
-    CREATED
+    PENDING_CREATION
+    PENDING_RENEWAL
+    AWAITING_CONFIRMATION
+    ACTIVE
     ERROR
-    SUCCESS
+}
+
+enum integrationType {
+    EMPTY
+    EVERNOTE
+    NOTION
 }
 
 type Error {
     message String
 }
 
-type Integrations {
-    evernote Evernote?
-}
-
 type Evernote {
-    oauthToken              String?
-    expires                 Int?        @db.Long
-    sessionOauthToken       String?
-    sessionOauthTokenSecret String?
-    oauthStatus             oauthStatus @default(EMPTY)
-    oauthError              Error[]
+    oauthToken       String?
+    oauthTokenSecret String?
+    oauthStatus      oauthStatus @default(PENDING_CREATION)
+    oauthError       Error[]
+    expires          Int?        @db.Long
 }
 
-model Users {
-    id           String        @id @map("_id")
-    name         String?
-    username     String?       @unique
-    email        String?       @unique
-    integrations Integrations?
-    createdAt    DateTime      @default(now()) @db.Date
-    updatedAt    DateTime      @updatedAt @db.Date
-    rss          Rss[]
-}
-
-type Notebook {
-    name String
-    guid String
-}
-
-type Tag {
-    name String
-    guid String
+model Integrations {
+    id       String          @id @default(auto()) @map("_id") @db.ObjectId
+    evernote Evernote?
+    userId   String
+    rss      Rss[]
+    type     integrationType @default(EMPTY)
+    active   Boolean         @default(false)
 }
 
 model Rss {
-    id        String    @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt DateTime  @default(now()) @db.Date
-    updatedAt DateTime  @updatedAt @db.Date
-    url       String
-    notebook  Notebook
-    tags      Tag[]
-    active    Boolean   @default(false)
-    user      Users     @relation(fields: [userId], references: [id])
-    userId    String
-    entries   Entries[]
+    id                 String       @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt          DateTime     @default(now()) @db.Date
+    updatedAt          DateTime     @updatedAt @db.Date
+    url                String
+    active             Boolean      @default(false)
+    entries            Entries[]
+    integration        Integrations @relation(fields: [integrationId], references: [id])
+    integrationId      String       @db.ObjectId
+    integrationDetails Json?
 }
 
 model Entries {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
-    createdAt   DateTime @default(now()) @db.Date
-    updatedAt   DateTime @updatedAt @db.Date
-    entryId     String
-    title       String
-    author      String
-    content     String
-    link        String
-    created     Boolean
-    entryDate   DateTime
-    entryErrors Error[]
-    feed        Rss      @relation(fields: [rssId], references: [id])
-    rssId       String   @db.ObjectId
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now()) @db.Date
+    updatedAt DateTime @updatedAt @db.Date
+    entryId   String
+    title     String
+    author    String
+    content   String
+    link      String
+    created   Boolean
+    entryDate DateTime
+    error     Error[]
+    rss       Rss      @relation(fields: [rssId], references: [id])
+    rssId     String   @db.ObjectId
 }
 
 //model TEMPLATE {
-//    id        String   @id @default(auto()) @map("_id") @db.ObjectId
-//    createdAt DateTime @default(now())
-//    updatedAt DateTime @updatedAt
+//    id            String          @id @default(auto()) @map("_id") @db.ObjectId
+//    createdAt     DateTime        @default(now())
+//    updatedAt     DateTime        @updatedAt
+//    otherDocument DocumentType    @relation(fields: [otherDocumentId], references: [id])
 //}

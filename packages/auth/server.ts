@@ -1,4 +1,8 @@
 export { authMiddleware } from "./src/middleware";
-export { getAuth } from "@clerk/nextjs/server";
+export { getAuth, clerkClient, buildClerkProps } from "@clerk/nextjs/server";
+export { verifyWebhook } from "./src/webhook";
 
-export type { AuthContext } from "./src/types";
+export type {
+  AuthContext,
+  NextApiRequestWithSvixRequiredHeaders,
+} from "./src/types";

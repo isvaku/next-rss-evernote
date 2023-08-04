@@ -1,4 +1,5 @@
 import { exampleRouter } from "./routers/example";
+import { evernoteRouter } from "./routers/evernote";
 import { createTRPCRouter } from "./trpc";
 
 /**
@@ -8,6 +9,7 @@ import { createTRPCRouter } from "./trpc";
  */
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
+  evernote: evernoteRouter,
 });
 
 // export type definition of API

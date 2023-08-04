@@ -4,7 +4,7 @@
  */
 await import("./src/env.mjs");
 
-import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin'
+import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -20,13 +20,13 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  transpilePackages: ["@erss/api", "@erss/db", "@erss/auth"],
+  transpilePackages: ["@erss/api", "@erss/db", "@erss/auth", "@erss/service"],
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.plugins = [...config.plugins, new PrismaPlugin()]
+      config.plugins = [...config.plugins, new PrismaPlugin()];
     }
 
-    return config
+    return config;
   },
 };
 export default config;
