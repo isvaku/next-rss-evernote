@@ -28,10 +28,10 @@ export default async function handler(
   }
 
   if (evt.type === "user.created") {
-    integrationService.create(evt.data.id);
+    await integrationService.create(evt.data.id);
   }
   if (evt.type === "user.deleted") {
-    integrationService.deleteById(evt.data.id as string);
+    await integrationService.deleteById(evt.data.id as string);
   }
 
   res.json({});

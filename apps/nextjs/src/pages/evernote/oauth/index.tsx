@@ -1,7 +1,7 @@
 import Evernote from "@erss/evernote";
-import { clerkClient, getAuth, buildClerkProps } from "@erss/auth/server";
+import { clerkClient, getAuth } from "@erss/auth/server";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import { ParsedUrlQuery } from "querystring";
+import type { ParsedUrlQuery } from "querystring";
 import { integrationService } from "@erss/service";
 
 interface evernoteOauthConfirmationParams extends ParsedUrlQuery {
@@ -10,15 +10,18 @@ interface evernoteOauthConfirmationParams extends ParsedUrlQuery {
   oauth_verifier: string;
 }
 
-export type evernoteOauthConfirmation = InferGetServerSidePropsType<
+type EvernoteOauthConfirmationInferredTypeProps = InferGetServerSidePropsType<
   typeof getServerSideProps
 >;
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  req,
-  resolvedUrl,
-}) => {
+type EvernoteOauthConfirmation = {
+  expires: number;
+  type: string;
+};
+
+export const getServerSideProps: GetServerSideProps<
+  EvernoteOauthConfirmation
+> = async ({ query, req, resolvedUrl }) => {
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -79,13 +82,15 @@ export const getServerSideProps: GetServerSideProps = async ({
     active: true,
   });
 
-  //return { props: { ...buildClerkProps(req, { user }) } }
   return {
     props: { expires: accessToken.expires, type: currentIntegration.type },
   };
 };
 
-export default function Page({ expires, type }: evernoteOauthConfirmation) {
+export default function Page({
+  expires,
+  type,
+}: EvernoteOauthConfirmationInferredTypeProps) {
   return (
     <>
       <h1>Congratulations</h1>
